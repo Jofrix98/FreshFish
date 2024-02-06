@@ -1,0 +1,92 @@
+\ProvidesPackage{ucblalgo}
+\RequirePackage[vlined, french, nofillcomment]{algorithm2e}
+\RequirePackage{xstring}
+\RequirePackage{ifthen}
+
+\SetFuncSty{textsf}%
+\SetProcArgSty{textsf}%
+\SetFuncArgSty{textsf}%
+\SetArgSty{textrm}%
+\SetCommentSty{}%
+
+\SetKw{vrai}{vrai}
+\SetKw{faux}{faux}
+\SetKw{tableau}{tableau}
+
+\SetKwInput{donres}{données-résultat}
+\SetKwInput{donnee}{données}
+\SetKwInput{resultat}{résultat}
+\SetKwInput{variables}{variables}
+
+\SetKwFor{FonctionInner}{Fonction}{}{fin}
+\SetKwFor{ProcedureInner}{Procédure}{}{fin}
+
+\newcommand{\algoname}[1]{%
+  \StrBefore{#1}{(}%
+}
+
+\newcommand{\algoargs}[1]{%
+  (\StrBehind{#1}{(}%
+}
+
+\newcommand{\Fonction}[2]{
+  %\def\ucblalgoname{\algoname{#1}}%
+  %\def\ucblalgoargs{\algoargs{#1}}%
+  \SetKwFunction{#1}{#1}%
+  \FonctionInner{\expandafter\csname#1\endcsname{} \ifthenelse{\equal{#2}{}}{}{$\rightarrow$ #2}}
+}
+\newcommand{\ArgFonction}[3]{
+  \SetKwFunction{#1}{#1}%
+  \FonctionInner{\expandafter\csname#1\endcsname{#2} \ifthenelse{\equal{#3}{}}{}{$\rightarrow$ #3}}
+}
+\newcommand{\Procedure}[1]{
+  \SetKwFunction{#1}{#1}% 
+  \ProcedureInner{\expandafter\csname#1\endcsname}
+}
+
+\newlength{\forewordlen}
+\newlength{\forewordantilen}
+
+\newenvironment{foreword}[1]{%
+  \settowidth{\forewordlen}{#1 : }%
+  \setlength{\forewordantilen}{\linewidth}%
+  \addtolength{\forewordantilen}{-\forewordlen}%
+  \begin{minipage}[t]{\forewordlen}%
+    #1 : %
+  \end{minipage}%
+  \begin{minipage}[t]{\forewordantilen}%
+}{%
+  \end{minipage}%
+}
+
+\newcommand{\precond}[1]{%
+  \begin{foreword}{précondition}%
+    \itshape{%
+      #1%
+    }%
+  \end{foreword}%
+}
+
+\newcommand{\postcond}[1]{%
+  \begin{foreword}{postcondition}%
+    \itshape{%
+      #1%
+    }%
+  \end{foreword}%
+}
+
+\newcommand{\incr}[1]{#1${+}{+}$}
+\newcommand{\decr}[1]{#1${-}{-}$}
+
+\newenvironment{ucblalgo}[1][H]{%
+  \renewcommand{\algorithmcfname}{Algorithme}%
+  \IncMargin{0em}%
+  \DontPrintSemicolon%
+  \begin{algorithm}[#1]%
+    \SetKwBlock{Algorithme}{Algorithme}{Fin}%
+}{%
+  \end{algorithm}%
+  \DecMargin{0em}%
+}
+
+\endinput

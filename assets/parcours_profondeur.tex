@@ -1,0 +1,27 @@
+\documentclass[varwidth = 10cm]{standalone}
+\usepackage{ucblalgo}
+
+\begin{document}
+
+\begin{ucblalgo}
+  \ArgFonction{explorer}{$G$ : le graphe, $u$ : une case}{}{
+    \PourCh{arc $u \rightarrow v$ dans $G$} {
+      \Si{$v$ n'est pas visitée} {
+        \tcp{on dira que $v$ est explorée depuis $u$}
+        marquer $v$ comme visitée \;
+        \explorer{$G$, $v$} \;
+      }
+    }
+  }
+
+  \vspace{5mm}
+  \ArgFonction{parcours}{$G$ : le graphe, $d$ : la case de départ}{}{
+    \Pour{chaque case $u$ dans $G$}{
+      marquer $u$ comme non visitée \;
+    }
+    marquer $d$ comme visitée \;
+    \explorer{$G$, $d$} \;
+  }
+\end{ucblalgo}
+
+\end{document}
