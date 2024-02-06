@@ -1,10 +1,28 @@
-CXX = g++
-CXXFLAGS += -g -Wall
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	CXX = g++
+	CXXFLAGS += -g -Wall
 
-GRAPHICS_FLAGS = $(shell pkg-config --cflags librsvg-2.0)
-GRAPHICS_CXXFLAGS = $(if $(GRAPHICS_FLAGS),$(GRAPHICS_FLAGS),-DNO_GRAPHICS)
+	GRAPHICS_FLAGS = $(shell pkg-config --cflags librsvg-2.0)
+	GRAPHICS_CXXFLAGS = $(if $(GRAPHICS_FLAGS),$(GRAPHICS_FLAGS),-DNO_GRAPHICS)
 
-LDFLAGS += $(shell pkg-config --libs librsvg-2.0)
+	LDFLAGS += $(shell pkg-config --libs librsvg-2.0)
+
+else
+
+	CXX = clang++
+	CXXFLAGS += -std=c++11 -Wall -ggdb
+
+	GRAPHICS_FLAGS = $(shell pkg-config --cflags librsvg-2.0)
+	GRAPHICS_CXXFLAGS = $(if $(GRAPHICS_FLAGS),$(GRAPHICS_FLAGS) -I/opt/homebrew/Cellar/librsvg/2.57.1/include,-DNO_GRAPHICS)
+	LDFLAGS += $(shell pkg-config --libs librsvg-2.0)
+
+	CAIRO_FLAGS = -I/opt/homebrew/Cellar/cairo/1.18.0/include
+    CXXFLAGS += $(CAIRO_FLAGS)
+
+
+endif
+
 
 .DEFAULT_GOAL := all
 
