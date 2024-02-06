@@ -40,7 +40,7 @@ int main() {
   std::cout << p << std::endl ;
 
   if (p.tuiles.find({1,1}) != p.tuiles.end()){
-    std::cout<<"Element " << p.tuiles;
+    std::cout<<"Element trouvé" << std::endl;
   }
 
   //dessin du plateau dans une image
