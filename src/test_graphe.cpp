@@ -39,6 +39,10 @@ int main() {
   //dessin du plateau dans la console
   std::cout << p << std::endl ;
 
+  if (p.tuiles.find({1,1}) != p.tuiles.end()){
+    std::cout<<"Element " << p.tuiles;
+  }
+
   //dessin du plateau dans une image
   //il est également possible d'écrire un fichier png
   //pour que ça fonctionne, il faut avoir librsvg-2.0

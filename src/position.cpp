@@ -4,8 +4,27 @@
 
 Position voisine(const Position& pos, int index) {
   Position res = pos ;
+  switch (index)
+  {
+  case 0:
+    res.first --;
+    break;
+  
+  case 1:
+    res.second ++;
+    break;
 
-  //votre code ici
+  case 2:
+    res.first ++;
+    break;
+
+  case 3:
+    res.second --;
+    break;
+
+  default:
+    break;
+  }
 
   return res ;
 }
