@@ -39,9 +39,57 @@ int main() {
   //dessin du plateau dans la console
   std::cout << p << std::endl ;
 
-  if (p.tuiles.find({1,1}) != p.tuiles.end()){
-    std::cout<<"Element trouvé" << std::endl;
+  // Tests des tuiles spécifiques
+
+  Position pos;
+  pos = {1, 1};
+  if (p.tuiles.find(pos) != p.tuiles.end()) {
+    const Tuile& tuile = p.tuiles.at(pos);
+    std::cout << "Tuile trouvée à la position {" << pos.first << ", " << pos.second << "}" << std::endl;
+    std::cout << "Amenagement : " << nom_amenagement(tuile.amenagement) << std::endl;
+    std::cout << "Joueur : " << tuile.joueur << std::endl;
+  } 
+
+  else {
+    std::cout << "Aucune tuile trouvée à la position {" << pos.first << ", " << pos.second << "}" << std::endl;
   }
+
+  pos = {3, 7};
+  if (p.tuiles.find(pos) != p.tuiles.end()) {
+    const Tuile& tuile = p.tuiles.at(pos);
+    std::cout << "Tuile trouvée à la position {" << pos.first << ", " << pos.second << "}" << std::endl;
+    std::cout << "Amenagement : " << nom_amenagement(tuile.amenagement) << std::endl;
+    std::cout << "Joueur : " << tuile.joueur << std::endl;
+  } 
+
+  else {
+    std::cout << "Aucune tuile trouvée à la position {" << pos.first << ", " << pos.second << "}" << std::endl;
+  }
+
+  pos = {8, 2};
+  if (p.tuiles.find(pos) != p.tuiles.end()) {
+    const Tuile& tuile = p.tuiles.at(pos);
+    std::cout << "Tuile trouvée à la position {" << pos.first << ", " << pos.second << "}" << std::endl;
+    std::cout << "Amenagement : " << nom_amenagement(tuile.amenagement) << std::endl;
+    std::cout << "Joueur : " << tuile.joueur << std::endl;
+  } 
+    
+  else {
+    std::cout << "Aucune tuile trouvée à la position {" << pos.first << ", " << pos.second << "}" << std::endl;
+  }
+
+  pos = {0, 0};
+  if (p.tuiles.find(pos) != p.tuiles.end()) {
+    const Tuile& tuile = p.tuiles.at(pos);
+    std::cout << "Tuile trouvée à la position {" << pos.first << ", " << pos.second << "}" << std::endl;
+    std::cout << "Amenagement : " << nom_amenagement(tuile.amenagement) << std::endl;
+    std::cout << "Joueur : " << tuile.joueur << std::endl;
+  } 
+    
+  else {
+    std::cout << "Aucune tuile trouvée à la position {" << pos.first << ", " << pos.second << "}" << std::endl;
+  }
+    
 
   //dessin du plateau dans une image
   //il est également possible d'écrire un fichier png

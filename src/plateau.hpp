@@ -14,6 +14,7 @@ struct Tuile {
   int joueur ;
 } ;
 
+
 struct Plateau {
 
   //ajout de cases une par une
