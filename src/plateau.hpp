@@ -12,6 +12,7 @@
 struct Tuile {
   Amenagement amenagement ;
   int joueur ;
+  bool estVisite;
 } ;
 
 

@@ -5,9 +5,50 @@
 #include <stdexcept>
 #include <sstream>
 
-static void placer_routes(Plateau& p) {
 
+
+static void explorer(Plateau& p, const Position& pos) {
+  for(int i = 0; i < 4; i++){
+    if((p.tuiles.find(pos) != p.tuiles.end()) && p.tuiles.at(voisine(pos, i)).estVisite == false){
+        p.tuiles.at(voisine(pos, i)).estVisite = true;
+        explorer(p, voisine(pos, i));
+    }
+  }
+}
+
+static void parcours_profondeur(Plateau& p, const Position& pos){
+  for(auto& t : p.tuiles){
+    t.second.estVisite = false;
+  }
+
+  p.tuiles.at(pos).estVisite = true;
+  explorer(p, pos);
+
+}
+
+
+static void placer_routes(Plateau& p) {
   //votre code ici
+  for(auto& t : p.tuiles){
+    if(t.second.amenagement == Amenagement::VIDE){
+      p.amenager(t.first, Amenagement::ARBRE, 1);
+
+      for(auto& tp : p.tuiles){
+        if((t.second.amenagement == Amenagement::VIDE) ){ //&& (tp != t)
+          parcours_profondeur(p, tp.first);
+          for(auto& tpp : p.tuiles){
+            if(tpp.second.estVisite == false){
+              p.amenager(tp.first, Amenagement::ROUTE, 1);
+            }
+          }
+
+        }
+      }
+
+      p.amenager(t.first, Amenagement::VIDE, 1);
+    }
+  }
+
 
 }
 
