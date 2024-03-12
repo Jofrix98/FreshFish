@@ -44,5 +44,5 @@ struct Plateau {
 
 //affichage du plateau en console
 std::ostream& operator<<(std::ostream& out, const Plateau& p) ;
-
+void placer_routes(Plateau& p);
 #endif

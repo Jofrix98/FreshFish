@@ -9,35 +9,33 @@
 
 
 static void explorer(Plateau& p, const Position& pos) {
-  p.tuiles.at(pos).estVisite = true;
   
   for(int i=0;i<4;i++){
     
     if(p.tuiles.find(voisine(pos, i)) != p.tuiles.end()){
       
-      if(!p.tuiles.at(voisine(pos, i)).estVisite){
-        //p.tuiles.at(voisine(pos, i)).estVisite = true;
+      if((!p.tuiles.at(voisine(pos, i)).estVisite) && !(p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::ARBRE)){
+        p.tuiles.at(voisine(pos, i)).estVisite = true;
         explorer(p, voisine(pos, i));
-      }
-
+  
     }
 
   }
 
-}
+}}
 
 static void parcours_profondeur(Plateau& p, const Position& pos){
   for(auto& t : p.tuiles){
     t.second.estVisite = false;
   }
 
-  //p.tuiles.at(pos).estVisite = true;
+  
+  p.tuiles.at(pos).estVisite = true;
   explorer(p, pos);
 
 }
 
-
-static void placer_routes(Plateau& p) {
+ void placer_routes(Plateau& p) {
   //votre code ici
   for(auto& t : p.tuiles){
     if(t.second.amenagement == Amenagement::VIDE){
@@ -48,17 +46,21 @@ static void placer_routes(Plateau& p) {
         if(tp.second.amenagement == Amenagement::VIDE ){ //&& (tp != t)
           parcours_profondeur(p, tp.first);
           for(auto& tpp : p.tuiles){
-            if(tpp.second.estVisite == false){
+            if(!tpp.second.estVisite  && tpp.second.amenagement == Amenagement::VIDE){
              // p.amenager(tp.first, Amenagement::ROUTE, -1);
-             tp.second.amenagement = Amenagement::ROUTE;
+             t.second.amenagement = Amenagement::ROUTE;
              break;
             }
+            
           }
           break;
         }
       }
       //p.amenager(t.first, Amenagement::VIDE, -1);
-      t.second.amenagement = Amenagement::VIDE;
+      if(t.second.amenagement == Amenagement::ARBRE){
+        t.second.amenagement = Amenagement::VIDE;
+      }
+      
     }
   }
 
