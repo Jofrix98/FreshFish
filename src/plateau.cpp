@@ -4,16 +4,26 @@
 
 #include <stdexcept>
 #include <sstream>
-
+#include <cassert>
+#include "melangeur.hpp"
 
 
 static void explorer(Plateau& p, const Position& pos) {
-  for(int i = 0; i < 4; i++){
-    if((p.tuiles.find(pos) != p.tuiles.end()) && p.tuiles.at(voisine(pos, i)).estVisite == false){
-        p.tuiles.at(voisine(pos, i)).estVisite = true;
+  p.tuiles.at(pos).estVisite = true;
+  
+  for(int i=0;i<4;i++){
+    
+    if(p.tuiles.find(voisine(pos, i)) != p.tuiles.end()){
+      
+      if(!p.tuiles.at(voisine(pos, i)).estVisite){
+        //p.tuiles.at(voisine(pos, i)).estVisite = true;
         explorer(p, voisine(pos, i));
+      }
+
     }
+
   }
+
 }
 
 static void parcours_profondeur(Plateau& p, const Position& pos){
@@ -21,7 +31,7 @@ static void parcours_profondeur(Plateau& p, const Position& pos){
     t.second.estVisite = false;
   }
 
-  p.tuiles.at(pos).estVisite = true;
+  //p.tuiles.at(pos).estVisite = true;
   explorer(p, pos);
 
 }
@@ -31,21 +41,24 @@ static void placer_routes(Plateau& p) {
   //votre code ici
   for(auto& t : p.tuiles){
     if(t.second.amenagement == Amenagement::VIDE){
-      p.amenager(t.first, Amenagement::ARBRE, 1);
+      //p.amenager(t.first, Amenagement::ARBRE, -1);
+      t.second.amenagement = Amenagement::ARBRE;
 
       for(auto& tp : p.tuiles){
-        if((t.second.amenagement == Amenagement::VIDE) ){ //&& (tp != t)
+        if(tp.second.amenagement == Amenagement::VIDE ){ //&& (tp != t)
           parcours_profondeur(p, tp.first);
           for(auto& tpp : p.tuiles){
             if(tpp.second.estVisite == false){
-              p.amenager(tp.first, Amenagement::ROUTE, 1);
+             // p.amenager(tp.first, Amenagement::ROUTE, -1);
+             tp.second.amenagement = Amenagement::ROUTE;
+             break;
             }
           }
-
+          break;
         }
       }
-
-      p.amenager(t.first, Amenagement::VIDE, 1);
+      //p.amenager(t.first, Amenagement::VIDE, -1);
+      t.second.amenagement = Amenagement::VIDE;
     }
   }
 
@@ -92,8 +105,8 @@ void Plateau::reserver(const Position& pos, int joueur) {
 void Plateau::amenager(const Position& pos, Amenagement amenagement, int joueur) {
   Tuile& t = tuiles.at(pos) ;
 
-/*
-  if(t.amenagement != Amenagement::RESERVEE) {
+
+ /* if(t.amenagement != Amenagement::RESERVEE) {
     throw std::invalid_argument(
         "cette tuile n'a pas été réservée"
         ) ;
@@ -103,8 +116,8 @@ void Plateau::amenager(const Position& pos, Amenagement amenagement, int joueur)
     throw std::invalid_argument(
         "cette tuile n'est pas réservée pour le joueur"
         ) ;
-  }
-*/
+  }*/
+
 
   t.joueur = joueur ;
   t.amenagement = amenagement ;
