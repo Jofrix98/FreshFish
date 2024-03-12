@@ -47,15 +47,15 @@ exit(1);*/
   while(candidates.taille() > 0) {
     Position pos = candidates.retirer() ;
     if(p.tuiles[pos].amenagement == Amenagement::VIDE) {
-      /*for(int i = 0; i < 51;i++){
+      for(int i = 0; i < 51;i++){
         if(tab[i] == pos){
           //p.reserver(pos, 0) ;
           p.amenager(pos, Amenagement::ARBRE, 0) ;
         }
         
-      }*/
+      }
       //p.reserver(pos, 0) ;
-      p.amenager(pos, Amenagement::ARBRE, 0) ;
+      //p.amenager(pos, Amenagement::ARBRE, 0) ;
       std::cout << "============================================" << std::endl ;
       std::cout << p << std::endl ;
 
