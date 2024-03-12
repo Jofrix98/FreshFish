@@ -5,7 +5,7 @@
 Position voisine(const Position& pos, int index) {
   Position res = pos ;
   switch (index)
-  {
+  { 
   case 0:
     res.first --;
     break;
