@@ -14,7 +14,9 @@ static void explorer(Plateau& p, const Position& pos) {
     
     if(p.tuiles.find(voisine(pos, i)) != p.tuiles.end()){
       
-      if((!p.tuiles.at(voisine(pos, i)).estVisite) && !(p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::ARBRE)){
+      if((!p.tuiles.at(voisine(pos, i)).estVisite) && 
+      (p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::VIDE || 
+      p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::ROUTE)){
         p.tuiles.at(voisine(pos, i)).estVisite = true;
         explorer(p, voisine(pos, i));
   
@@ -35,13 +37,14 @@ static void parcours_profondeur(Plateau& p, const Position& pos){
 
 }
 
-static bool arbre_clos(Plateau& p, const Position& pos){
+static bool clos(Plateau& p, const Position& pos){
 
     int t = 0;
     for(int i=0;i<4;i++){
     
       if((p.tuiles.find(voisine(pos, i)) == p.tuiles.end())||
-      (p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::ARBRE)){
+      !(p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::VIDE || 
+      p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::ROUTE )){
         t++;
   
     }
@@ -68,7 +71,7 @@ static bool arbre_clos(Plateau& p, const Position& pos){
 
 
       for(auto& tp : p.tuiles){
-        if(!(tp.second.amenagement == Amenagement::VIDE || tp.second.amenagement == Amenagement::ROUTE ) && arbre_clos(p, tp.first)){
+        if(!(tp.second.amenagement == Amenagement::VIDE || tp.second.amenagement == Amenagement::ROUTE ) && clos(p, tp.first)){
           t.second.amenagement = Amenagement::ROUTE;
           
         }
@@ -142,7 +145,7 @@ void Plateau::amenager(const Position& pos, Amenagement amenagement, int joueur)
   Tuile& t = tuiles.at(pos) ;
 
 
- /* if(t.amenagement != Amenagement::RESERVEE) {
+  /*if(t.amenagement != Amenagement::RESERVEE) {
     throw std::invalid_argument(
         "cette tuile n'a pas été réservée"
         ) ;
