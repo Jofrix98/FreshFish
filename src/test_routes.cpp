@@ -10,7 +10,7 @@
 int main() {
 
   Plateau p ;
-  p.ajouter({0,0}, {9,9}) ;
+  /*p.ajouter({0,0}, {2,2}) ;
   Position tab[] = {{1, 3}, {7, 4}, {4, 4}, {5, 1}, {2, 1}, {0, 4},
                     {6, 3}, {9, 3}, {8, 5}, {3, 4}, {4, 6}, {7, 3},
                     {0, 3}, {9, 4}, {4, 5}, {5, 7}, {0, 0}, {3, 1},
@@ -20,7 +20,47 @@ int main() {
                     {4, 7}, {9, 9}, {1, 6}, {7, 1}, {5, 6}, {1, 7},
                     {9, 2}, {7, 5}, {0, 1}, {3, 5}, {7, 8}, {2, 7},
                     {7, 7}, {9, 1}, {2, 8}
-};
+};*/
+
+
+  p.ajouter({0,0}, {9,9}) ;
+  p.amenager({3,2}, Amenagement::ARBRE, 0) ;
+  p.amenager({3,6}, Amenagement::ARBRE, 0) ;
+  p.amenager({3,7}, Amenagement::ARBRE, 0) ;
+  p.amenager({4,1}, Amenagement::ARBRE, 0) ;
+  p.amenager({5,3}, Amenagement::ARBRE, 0) ;
+  p.amenager({5,5}, Amenagement::ARBRE, 0) ;
+  p.amenager({6,5}, Amenagement::ARBRE, 0) ;
+  p.amenager({8,6}, Amenagement::ARBRE, 0) ;
+  p.amenager({9,5}, Amenagement::ARBRE, 0) ;
+  p.amenager({9,6}, Amenagement::ARBRE, 0) ;
+
+  p.amenager({2,8}, Amenagement::PRODUCTEUR_AVOCAT, 0) ;
+  p.amenager({8,9}, Amenagement::PRODUCTEUR_BROCOLI, 0) ;
+  p.amenager({4,2}, Amenagement::PRODUCTEUR_CAROTTE, 0) ;
+  p.amenager({2,2}, Amenagement::PRODUCTEUR_DATTE, 0) ;
+  p.amenager({9,4}, Amenagement::PRODUCTEUR_ECHALOTE, 0) ;
+
+  p.amenager({2,1}, Amenagement::BOUTIQUE_CAROTTE, 2) ;
+  p.amenager({2,4}, Amenagement::BOUTIQUE_CAROTTE, 4) ;
+  p.amenager({2,5}, Amenagement::BOUTIQUE_BROCOLI, 0) ;
+  p.amenager({2,7}, Amenagement::BOUTIQUE_CAROTTE, 1) ;
+
+  p.amenager({3,4}, Amenagement::BOUTIQUE_ECHALOTE, 3) ;
+  p.amenager({3,5}, Amenagement::BOUTIQUE_ECHALOTE, 4) ;
+  p.amenager({3,8}, Amenagement::BOUTIQUE_AVOCAT, 1) ;
+
+  p.amenager({4,3}, Amenagement::BOUTIQUE_DATTE, 1) ;
+
+  p.amenager({5,1}, Amenagement::BOUTIQUE_BROCOLI, 3) ;
+
+  p.amenager({8,2}, Amenagement::BOUTIQUE_CAROTTE, 0) ;
+  p.amenager({8,8}, Amenagement::BOUTIQUE_DATTE, 0) ;
+
+  p.amenager({9,2}, Amenagement::BOUTIQUE_AVOCAT, 4) ;
+  p.amenager({9,9}, Amenagement::BOUTIQUE_DATTE, 2) ;
+  
+  parcours_profondeur(p, {0,0});
 
 
 /*p.tuiles[{0,0}].amenagement = Amenagement::ARBRE;
@@ -31,15 +71,15 @@ std::cout << p << std::endl ;
 
 exit(1);*/
  
- Melangeur<Position> candidates ;
+ /*Melangeur<Position> candidates ;
   for(auto& t : p.tuiles) {
     candidates.inserer(t.first) ; 
-  }
+  }*/
 
 
   
 
-#ifndef NO_GRAPHICS
+/*#ifndef NO_GRAPHICS
   int i = 1 ;
   p.dessiner("output/plateau_0.png") ;
 #endif
@@ -47,7 +87,7 @@ exit(1);*/
   while(candidates.taille() > 0) {
     Position pos = candidates.retirer() ;
     if(p.tuiles[pos].amenagement == Amenagement::VIDE) {
-      for(int i = 0; i < 51;i++){
+      /*for(int i = 0; i < 51;i++){
         if(tab[i] == pos){
           //p.reserver(pos, 0) ;
           p.amenager(pos, Amenagement::ARBRE, 0) ;
@@ -55,7 +95,7 @@ exit(1);*/
         
       }
       //p.reserver(pos, 0) ;
-      //p.amenager(pos, Amenagement::ARBRE, 0) ;
+      p.amenager(pos, Amenagement::ARBRE, 0) ;
       std::cout << "============================================" << std::endl ;
       std::cout << p << std::endl ;
 
@@ -67,8 +107,8 @@ exit(1);*/
 #endif
     }
 
-}
-
+}*/
+std::cout << p << std::endl ;
 
 
   return 0 ;

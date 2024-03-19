@@ -6,6 +6,10 @@
 #include <sstream>
 #include <cassert>
 #include "melangeur.hpp"
+#include <unordered_map>
+#include <vector>
+
+
 
 
 static void explorer(Plateau& p, const Position& pos) {
@@ -14,24 +18,41 @@ static void explorer(Plateau& p, const Position& pos) {
     
     if(p.tuiles.find(voisine(pos, i)) != p.tuiles.end()){
       
-      if((!p.tuiles.at(voisine(pos, i)).estVisite) && 
-      (p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::VIDE || 
-      p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::ROUTE)){
-        p.tuiles.at(voisine(pos, i)).estVisite = true;
-        explorer(p, voisine(pos, i));
-  
+    arc A;
+    A.debut = pos;
+    A.fin = voisine(pos, i);
+    if(!(p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::VIDE)){
+        A.type = type_arc::IMPASSE;
+
+    }else if(p.tuiles.at(voisine(pos, i)).estVisite) {
+        A.type = type_arc::UTILISE;
+    } else {
+        A.type = type_arc::IGNORE;
+    }
+    p.tab_arc.push_back(A);
+      
+      if((!p.tuiles.at(voisine(pos, i)).estVisite) 
+          && 
+        (p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::VIDE || p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::ROUTE)){
+            p.tuiles.at(voisine(pos, i)).estVisite = true;
+            int profondeur_voisin = p.tuiles.at(voisine(pos, i)).profondeur;
+            int profondeur_courant = p.tuiles.at(pos).profondeur;
+            profondeur_voisin =  profondeur_courant + 1;
+            p.tuiles.at(voisine(pos, i)).profondeur = profondeur_voisin;
+            explorer(p, voisine(pos, i));  
     }
 
   }
 
 }}
 
-static void parcours_profondeur(Plateau& p, const Position& pos){
+void parcours_profondeur(Plateau& p, const Position& pos){
   for(auto& t : p.tuiles){
     t.second.estVisite = false;
+    t.second.profondeur = 0;
+    t.second.remontee = 0;
   }
 
-  
   p.tuiles.at(pos).estVisite = true;
   explorer(p, pos);
 
@@ -60,50 +81,42 @@ static bool clos(Plateau& p, const Position& pos){
 }
 
 
- void placer_routes(Plateau& p) {
-  //votre code ici
+ void placer_routes_naive(Plateau& p) {
   for(auto& t : p.tuiles){
 
     if(t.second.amenagement == Amenagement::VIDE){
-      //p.amenager(t.first, Amenagement::ARBRE, -1);
       t.second.amenagement = Amenagement::ARBRE;
-
-
 
       for(auto& tp : p.tuiles){
         if(!(tp.second.amenagement == Amenagement::VIDE || tp.second.amenagement == Amenagement::ROUTE ) && clos(p, tp.first)){
-          t.second.amenagement = Amenagement::ROUTE;
-          
+          t.second.amenagement = Amenagement::ROUTE;   
         }
 
-        if(tp.second.amenagement == Amenagement::VIDE || tp.second.amenagement == Amenagement::ROUTE ){ //&& (tp != t)
+        if(tp.second.amenagement == Amenagement::VIDE || tp.second.amenagement == Amenagement::ROUTE ){
           parcours_profondeur(p, tp.first);
           for(auto& tpp : p.tuiles){
             if(!tpp.second.estVisite  && (tpp.second.amenagement == Amenagement::VIDE || tpp.second.amenagement == Amenagement::ROUTE)){
-             // p.amenager(tp.first, Amenagement::ROUTE, -1);
              t.second.amenagement = Amenagement::ROUTE;
              break;
-            }
-            
-          }
-        
-          
-
-          
+            }          
+          }         
         }
-
       }
-      //p.amenager(t.first, Amenagement::VIDE, -1);
       if(t.second.amenagement == Amenagement::ARBRE){
         t.second.amenagement = Amenagement::VIDE;
-      }
-      
-    }
-    
+      }     
+    }   
   }
-
-
 }
+
+// Fonction pour placer les routes en utilisant l'algorithme élaboré
+void placer_routes_elabore(Plateau& p) {
+  for (auto& tuile : p.tuiles) {
+        tuile.second.profondeur = 0;
+        tuile.second.remontee = 0;
+    }
+}
+
 
 void Plateau::ajouter(const Position& pos) {
   if(tuiles.find(pos) != tuiles.end()) {
@@ -161,7 +174,7 @@ void Plateau::amenager(const Position& pos, Amenagement amenagement, int joueur)
 
   t.joueur = joueur ;
   t.amenagement = amenagement ;
-  placer_routes(*this) ;
+  placer_routes_naive(*this) ;
 }
 
 std::ostream& operator<<(std::ostream& out, const Plateau& plateau) {

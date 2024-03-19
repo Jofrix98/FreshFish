@@ -13,7 +13,22 @@ struct Tuile {
   Amenagement amenagement ;
   int joueur ;
   bool estVisite;
+  int profondeur;
+  int remontee;
 } ;
+
+enum type_arc
+{
+  IMPASSE,
+  UTILISE,
+  IGNORE,
+};
+
+struct arc {
+  type_arc type;
+  Position debut, fin;
+};
+
 
 
 struct Plateau {
@@ -40,9 +55,13 @@ struct Plateau {
 
   //stockage des aménagements éliminés (pour la fin du projet)
   std::vector<Tuile> eliminees ;
+
+  std::vector<arc> tab_arc;
 } ;
 
 //affichage du plateau en console
 std::ostream& operator<<(std::ostream& out, const Plateau& p) ;
+void placer_routes_naive(Plateau& p);
 void placer_routes(Plateau& p);
+void parcours_profondeur(Plateau& p, const Position& pos);
 #endif
