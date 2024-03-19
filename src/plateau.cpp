@@ -86,6 +86,7 @@ static bool clos(Plateau& p, const Position& pos){
             }
             
           }
+        
           
 
           
