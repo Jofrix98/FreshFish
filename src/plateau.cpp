@@ -18,18 +18,23 @@ static void explorer(Plateau& p, const Position& pos) {
     
     if(p.tuiles.find(voisine(pos, i)) != p.tuiles.end()){
       
-    arc A;
-    A.debut = pos;
-    A.fin = voisine(pos, i);
-    if(!(p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::VIDE)){
-        A.type = type_arc::IMPASSE;
+      arc A;
+      A.debut = pos;
+      A.fin = voisine(pos, i);
+      if(!(p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::VIDE)){
+          A.type = type_arc::IMPASSE;
+           
+          /*std::cout << "position Debut: " << A.debut << std::endl;
+          std::cout << "position fin: " << A.fin << std::endl;
+          std::cout << "Type lien: " << A.type << std::endl;*/
 
-    }else if(p.tuiles.at(voisine(pos, i)).estVisite) {
-        A.type = type_arc::UTILISE;
-    } else {
-        A.type = type_arc::IGNORE;
-    }
-    p.tab_arc.push_back(A);
+      }else if(!p.tuiles.at(voisine(pos, i)).estVisite) {
+          A.type = type_arc::UTILISE;
+      } else {
+          A.type = type_arc::IGNORE;
+      }
+    
+      p.tab_arc.push_back(A);
       
       if((!p.tuiles.at(voisine(pos, i)).estVisite) 
           && 
@@ -53,6 +58,7 @@ void parcours_profondeur(Plateau& p, const Position& pos){
     t.second.remontee = 0;
   }
 
+  p.tab_arc.clear();
   p.tuiles.at(pos).estVisite = true;
   explorer(p, pos);
 
