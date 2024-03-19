@@ -10,7 +10,7 @@
 int main() {
 
   Plateau p ;
-  /*p.ajouter({0,0}, {2,2}) ;
+  /*p.ajouter({0,0}, {3,3}) ;
   Position tab[] = {{1, 3}, {7, 4}, {4, 4}, {5, 1}, {2, 1}, {0, 4},
                     {6, 3}, {9, 3}, {8, 5}, {3, 4}, {4, 6}, {7, 3},
                     {0, 3}, {9, 4}, {4, 5}, {5, 7}, {0, 0}, {3, 1},
@@ -74,12 +74,12 @@ exit(1);*/
  /*Melangeur<Position> candidates ;
   for(auto& t : p.tuiles) {
     candidates.inserer(t.first) ; 
-  }*/
+  }
 
 
   
 
-/*#ifndef NO_GRAPHICS
+#ifndef NO_GRAPHICS
   int i = 1 ;
   p.dessiner("output/plateau_0.png") ;
 #endif

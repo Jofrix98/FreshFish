@@ -8,12 +8,14 @@
 #include "melangeur.hpp"
 #include <unordered_map>
 #include <vector>
+#include <algorithm>
 
 
 
 
 static void explorer(Plateau& p, const Position& pos) {
-  
+ 
+  p.tuiles.at(pos).remontee = p.tuiles.at(pos).profondeur;
   for(int i=0;i<4;i++){
     
     if(p.tuiles.find(voisine(pos, i)) != p.tuiles.end()){
@@ -22,20 +24,23 @@ static void explorer(Plateau& p, const Position& pos) {
       A.debut = pos;
       A.fin = voisine(pos, i);
       if(!(p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::VIDE)){
-          A.type = type_arc::IMPASSE;
-           
-          /*std::cout << "position Debut: " << A.debut << std::endl;
-          std::cout << "position fin: " << A.fin << std::endl;
-          std::cout << "Type lien: " << A.type << std::endl;*/
+        A.type = type_arc::IMPASSE;
+          
+        /*std::cout << "position Debut: " << A.debut << std::endl;
+        std::cout << "position fin: " << A.fin << std::endl;
+        std::cout << "Type lien: " << A.type << std::endl;*/
 
       }else if(!p.tuiles.at(voisine(pos, i)).estVisite) {
-          A.type = type_arc::UTILISE;
+        A.type = type_arc::UTILISE;
       } else {
-          A.type = type_arc::IGNORE;
+        A.type = type_arc::IGNORE;
       }
     
       p.tab_arc.push_back(A);
+
       
+
+
       if((!p.tuiles.at(voisine(pos, i)).estVisite) 
           && 
         (p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::VIDE || p.tuiles.at(voisine(pos, i)).amenagement == Amenagement::ROUTE)){
@@ -44,7 +49,15 @@ static void explorer(Plateau& p, const Position& pos) {
             int profondeur_courant = p.tuiles.at(pos).profondeur;
             profondeur_voisin =  profondeur_courant + 1;
             p.tuiles.at(voisine(pos, i)).profondeur = profondeur_voisin;
+            
             explorer(p, voisine(pos, i));  
+    }
+
+    if(p.tab_arc.back().type == type_arc::UTILISE ){
+      p.tuiles.at(pos).remontee = fmin(p.tuiles.at(pos).remontee,p.tuiles.at(voisine(pos, i)).remontee);
+
+    } else if(p.tab_arc.back().type == type_arc::IGNORE ){
+      p.tuiles.at(pos).remontee = fmin(p.tuiles.at(pos).remontee,p.tuiles.at(voisine(pos, i)).profondeur);
     }
 
   }
